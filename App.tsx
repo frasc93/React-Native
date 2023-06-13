@@ -1,20 +1,51 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+// App.js
 
-export default function App() {
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './screens/HomeScreen';
+import AnimationScreen from './screens/AnimationScreen';
+import AdventureScreen from './screens/AdventureScreen';
+import DramaScreen from './screens/DramaScreen';
+import Navbar from './components/Navbar';
+import { View, StyleSheet } from 'react-native';
+import MovieDetails from './screens/MovieDetailsScreen';
+
+
+const Stack = createStackNavigator();
+
+const App = () => {
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <NavigationContainer>
+       <Navbar /> 
+       <View style={styles.content}>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} /> 
+        <Stack.Screen name="Animazione" component={AnimationScreen}  />
+        <Stack.Screen name="Avventura" component={AdventureScreen}  />
+        <Stack.Screen name="Drammatico" component={DramaScreen}  />
+        <Stack.Screen name="MovieDetails" component={MovieDetails as React.ComponentType<any>} />
+
+      </Stack.Navigator>
+      </View>
+    </NavigationContainer>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: 0,
+    
   },
+  content: {
+    flex: 1,
+    flexDirection: 'column',
+    marginTop: 0,
+    
+  },
 });
+
+export default App;
