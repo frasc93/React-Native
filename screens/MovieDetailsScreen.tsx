@@ -1,6 +1,8 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type RootStackParamList = {
   MovieDetails: { movie: Movie };
@@ -22,16 +24,65 @@ type Movie = {
 
 const MovieDetails: React.FC<Props> = ({ route }) => {
   const { movie } = route.params;
+  const [isFavorite, setIsFavorite] = useState(false);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    fetchFavoriteStatus();
+  }, []);
+
+  const fetchFavoriteStatus = async () => {
+    try {
+      const favoritesString = await AsyncStorage.getItem('Preferiti');
+      const favorites: Movie[] = favoritesString ? JSON.parse(favoritesString) : [];
+      const foundMovie = favorites.find((favMovie) => favMovie.id === movie.id);
+
+      setIsFavorite(!!foundMovie);
+    } catch (error) {
+      console.error('Error fetching favorites from storage:', error);
+    }
+  };
+
+  const handleToggleFavorite = async () => {
+    try {
+      const favoritesString = await AsyncStorage.getItem('Preferiti');
+      let favorites: Movie[] = favoritesString ? JSON.parse(favoritesString) : [];
+      const foundMovieIndex = favorites.findIndex((favMovie) => favMovie.id === movie.id);
+
+      if (foundMovieIndex !== -1) {
+        favorites.splice(foundMovieIndex, 1);
+        setIsFavorite(false);
+      } else {
+        favorites.push(movie);
+        setIsFavorite(true);
+      }
+
+      await AsyncStorage.setItem('Preferiti', JSON.stringify(favorites));
+    } catch (error) {
+      console.error('Error updating favorites:', error);
+    }
+  };
+
+  const handleNavigateToFavorites = () => {
+    navigation.navigate('Preferiti' as never);
+  };
 
   return (
-    <View style={styles.container}>
-       
-      <Image source={{ uri: movie.image }} style={styles.image} />
-      <Text style={styles.title}>{movie.title}</Text>
-      <Text style={styles.genre}>{movie.genre}</Text>
-      <Text style={styles.description}>{movie.description}</Text>
-     
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <Image source={{ uri: movie.image }} style={styles.image} />
+        <Text style={styles.title}>{movie.title}</Text>
+        <Text style={styles.genre}>{movie.genre}</Text>
+        <Text style={styles.description}>{movie.description}</Text>
+
+        <TouchableOpacity style={styles.heartButton} onPress={handleToggleFavorite}>
+          <Icon name={isFavorite ? 'heart' : 'heart-o'} size={24} color={isFavorite ? 'red' : 'black'} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.favoriteButton} onPress={handleNavigateToFavorites}>
+          <Text style={styles.favoriteButtonText}>Vai ai Preferiti</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -63,7 +114,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 8,
     textAlign: 'center',
-    alignConent: 'center',
+    alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
@@ -83,6 +134,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 8,
     textAlign: 'justify',
+  },
+  favoriteButton: {
+    backgroundColor: '#FF8A5B',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 4,
+    marginBottom: 8,
+  },
+  favoriteButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  heartButton: {
+    marginBottom: 10,
   },
 });
 

@@ -10,7 +10,7 @@ const DramaScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/v1/movies/genre/Drammatico');
+        const response = await axios.get('http://192.168.1.7:3000/v1/movies/genre/Drammatico');
         setMovies(response.data);
       } catch (error) {
         console.log(error);

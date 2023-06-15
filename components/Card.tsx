@@ -13,7 +13,6 @@ type Movie = {
 };
 type RootStackParamList = {
   MovieDetails: { movie: Movie };
-  // Altre schermate della tua app
 };
 
 type MovieDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'MovieDetails'>;
@@ -23,7 +22,6 @@ const Card = ({ movie }: { movie: Movie }) => {
   const navigation = useNavigation<MovieDetailsScreenNavigationProp>();
 
   const handlePress = () => {
-    // Naviga verso la pagina dei dettagli del film e passa i dati del film come parametro
     navigation.navigate('MovieDetails', { movie });
   };
 
@@ -52,7 +50,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 0,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
@@ -69,7 +67,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    objectFit: 'cover',
   },
   title: {
     fontSize: 20,

@@ -9,12 +9,11 @@ const HomeScreen = () => {
   const [movies, setMovies] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredMovies, setFilteredMovies] = useState<any[]>([]);
-  const [noResults, setNoResults] = useState(false); 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/v1/movies/allmovies');
+        const response = await axios.get('http://192.168.1.7:3000/v1/movies/allmovies');
         setMovies(response.data);
         setFilteredMovies(response.data); // Inizialmente visualizza tutti i film
       } catch (error) {
@@ -25,6 +24,7 @@ const HomeScreen = () => {
     fetchData();
   }, []);
 
+  // ricerca input per titolo
   const handleSearchButtonPress = () => {
     if (searchQuery.trim() === '') {
       setFilteredMovies(movies); // Ripristina l'elenco completo dei film
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     borderWidth: 2,
-    borderColor: '#FFED66',
+    borderColor: '#FF8A5B',
     borderRadius: 4,
     paddingVertical: 8,
     paddingHorizontal: 12,
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
   searchButton: {
     marginLeft: 8,
-    backgroundColor: '#00CECB',
+    backgroundColor: '#FF8A5B',
     borderRadius: 4,
     paddingVertical: 8,
     paddingHorizontal: 12,

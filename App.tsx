@@ -1,5 +1,3 @@
-// App.js
-
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -8,15 +6,19 @@ import AnimationScreen from './screens/AnimationScreen';
 import AdventureScreen from './screens/AdventureScreen';
 import DramaScreen from './screens/DramaScreen';
 import Navbar from './components/Navbar';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import MovieDetails from './screens/MovieDetailsScreen';
+import FavoritesScreen from './screens/FavoritesScreen';
+import Preferiti from './screens/FavoritesScreen';
+
 
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <View style={styles.container}>
+   
+    <SafeAreaView style={styles.container}>
     <NavigationContainer>
        <Navbar /> 
        <View style={styles.content}>
@@ -26,11 +28,13 @@ const App = () => {
         <Stack.Screen name="Avventura" component={AdventureScreen}  />
         <Stack.Screen name="Drammatico" component={DramaScreen}  />
         <Stack.Screen name="MovieDetails" component={MovieDetails as React.ComponentType<any>} />
+        <Stack.Screen name="Preferiti" component={FavoritesScreen as React.ComponentType<any>} />
 
       </Stack.Navigator>
       </View>
     </NavigationContainer>
-    </View>
+    </SafeAreaView>
+
   );
 };
 

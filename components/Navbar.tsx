@@ -1,7 +1,5 @@
-// Navbar.js
-
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -21,7 +19,10 @@ const Navbar = () => {
   };
 
   const goToHome = () => {
-    navigation.navigate('Home' as never)
+    navigation.navigate('Home' as never);
+  };
+  const goToFavorite = () => {
+    navigation.navigate('Preferiti' as never);
   };
 
   const goToAnimation = () => {
@@ -38,35 +39,35 @@ const Navbar = () => {
   };
 
   return (
-    <View style={styles.navbar}>
+    <SafeAreaView style={styles.navbar}>
       <View style={styles.logoContainer}>
-        {/* Inserisci qui il tuo logo */}
         <MaterialIcons name="local-movies" size={24} color="black" />
       </View>
       <View style={styles.linkContainer}>
         <TouchableOpacity onPress={goToHome}>
           <Text style={styles.link}>Home</Text>
         </TouchableOpacity>
-        <View style={styles.dropdownContainer}>
-          <TouchableOpacity onPress={toggleDropdown}>
-            <Text style={styles.link}>Generi</Text>
-          </TouchableOpacity>
-          {dropdownOpen && (
-            <View style={styles.dropdownContent}>
-              <TouchableOpacity onPress={goToAnimation}>
-                <Text style={styles.dropdownItem}>Animazione</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={goToAdventure}>
-                <Text style={styles.dropdownItem}>Avventura</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={goToDrama}>
-                <Text style={styles.dropdownItem}>Drammatico</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
+        <TouchableOpacity onPress={toggleDropdown}>
+          <Text style={styles.link}>Generi</Text>
+        </TouchableOpacity>
+        {dropdownOpen && (
+          <View style={styles.dropdownContent}>
+            <TouchableOpacity onPress={goToAnimation}>
+              <Text style={styles.dropdownItem}>Animazione</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={goToAdventure}>
+              <Text style={styles.dropdownItem}>Avventura</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={goToDrama}>
+              <Text style={styles.dropdownItem}>Drammatico</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        <TouchableOpacity onPress={goToFavorite}>
+          <Text style={styles.link}>Preferiti</Text>
+        </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     height: 60,
     paddingHorizontal: 16,
     backgroundColor: '#FFED66',
-    
+    marginTop: 26,
     zIndex: 2,
   },
   logoContainer: {
@@ -94,20 +95,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
   },
-  dropdownContainer: {
-    position: 'relative',
-    
-  },
   dropdownContent: {
     position: 'absolute',
     top: 40,
-    right: 0,
+    right: 58,
     backgroundColor: '#FFED66',
     padding: 8,
     borderRadius: 4,
     elevation: 4,
-    width: 120,
-   
+    width: 110,
   },
   dropdownItem: {
     fontSize: 16,
